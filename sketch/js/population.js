@@ -1,3 +1,5 @@
+/* eslint no-console: ["error", { allow: ["warn"] }] */
+
 import Tree from './tree';
 import sketch from './sketch';
 
@@ -8,11 +10,11 @@ const getOrdinal = (n) => {
 };
 
 export default class Population {
-  constructor(num = 20, mutationRate = 0.05) {
+  constructor(num = 20, mutationRate = 0.05, fittestSelectProb = 0.51) {
     this.beings = [];
     this.generation = 0;
     this.mutationRate = mutationRate;
-    this.fittestSelectProb = 0.25;
+    this.fittestSelectProb = fittestSelectProb;
     this.drawingIndex = 0;
 
     for (let i = 0; i < num; i += 1) {
@@ -38,6 +40,9 @@ export default class Population {
   selectParent() {
     let rand = Math.random();
     let selectionProb = this.fittestSelectProb;
+    if (selectionProb <= 0.5) {
+      console.warn('Selection probability for the fittest being is less than 0.5. Please choose another value, or the algorithm might not behave as intended.');
+    }
     for (let i = 0; i < this.beings.length - 1; i += 1) {
       if (rand < selectionProb) {
         return this.beings[i];
